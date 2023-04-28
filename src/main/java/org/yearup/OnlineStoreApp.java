@@ -13,6 +13,8 @@ public class OnlineStoreApp {
 
     private final String ANSI_RED = "\u001B[31m";
     private final String ANSI_RESET = "\u001B[0m";
+    private  final String YELLOW = "\033[0;33m";  // YELLOW
+
     String userInput; // stores the id of the product to be added to the cart
     private boolean isValidOption = false; // checks if the option selected is valid
     private Set<Product> distinct; // delcare a set to store all the distinct products
@@ -94,6 +96,7 @@ public class OnlineStoreApp {
                 }
             } catch (InputMismatchException ex) {
                 System.out.println(ANSI_RED + "Invalid! Valid inputs are integers between 0 - 2" + ANSI_RESET);
+                homeScreen();
             }
 
         }
@@ -103,7 +106,7 @@ public class OnlineStoreApp {
 
     private void displayProduct() {
 
-        
+
         scanner = new Scanner(System.in);
         isValidOption = false;
 
@@ -147,47 +150,94 @@ public class OnlineStoreApp {
 
     private void displayShoppingCart() {
 
-        double sum = 0.00;
         distinct = new HashSet<>(shoppingCart);
         int productQuantity;
 
-        System.out.println("------- ----------------------------------- ------ ----------");
+        System.out.println("\n------- ----------------------------------- ------ ----------");
         System.out.printf("|%-7s|%-35s|%-7s|%-8s|\n", "ID", "NAME", "PRICE", "QUANTITY");
         System.out.println("------- ----------------------------------- ------ ----------\n");
 
         for (Product product : distinct) {
-            
+
             // count the frequency of product in shopping cart
-            productQuantity = Collections.frequency(shoppingCart, product); 
+            productQuantity = Collections.frequency(shoppingCart, product);
             // format and display the content of shopping cart
-            System.out.printf("|%7s|%-35s|%7.2f|%8s|\n", product.getId(), product.getName(), 
+            System.out.printf("|%7s|%-35s|%7.2f|%8s|\n", product.getId(), product.getName(),
                     product.getPrice(), productQuantity);
             System.out.println("------- ----------------------------------- ------ ----------");
         }
 
-        System.out.println("Would you like to"+ANSI_RED+" check out "+ANSI_RESET+"?");
+        System.out.println("Would you like to" + YELLOW + " check out " + ANSI_RESET + "?");
         System.out.println("- 'C' to check out");
         System.out.println("- 'X' for home screen");
         System.out.print("Select a command: ");
         scanner.nextLine();
         userInput = scanner.nextLine();
-        
-        if (userInput.equalsIgnoreCase("C")){
+
+        if (userInput.equalsIgnoreCase("C")) {
             checkout();
-        }
-        else if (userInput.equalsIgnoreCase("X")){
+        } else if (userInput.equalsIgnoreCase("X")) {
             homeScreen();
         }
-        
+
     }
 
     private void checkout() {
 
-        for(Product product: distinct){
+        double sum = 0.00; // declare the variable that would store the total
+        double cashAmount;
+        double balance = 0.00;
 
-            productQuantity = Collections.frequency(shoppingCart,product);
+        System.out.println("===============================================================");
+        System.out.println("\t\t\tONLINE STORE CHECK OUT\t\t\t");
+        System.out.println("===============================================================");
 
 
+        System.out.println("\n------- ----------------------------------- ------ ----------");
+        System.out.printf("|%-7s|%-35s|%-7s|%-8s|\n", "ID", "NAME", "PRICE", "QUANTITY");
+        System.out.println("------- ----------------------------------- ------ ----------");
+
+        for (Product product : distinct) {
+
+            productQuantity = Collections.frequency(shoppingCart, product);
+
+            // format and display the content of shopping cart
+            System.out.printf("|%7s|%-35s|%7.2f|%8s|\n", product.getId(), product.getName(),
+                    product.getPrice(), productQuantity);
+            System.out.println("------- ----------------------------------- ------ ----------");
+
+            sum += product.getPrice() * productQuantity;
+
+        }
+        System.out.printf("%7s: %.2f\n","TOTAL",sum); // dispaly total
+        System.out.println("--------------------------------------------------------------");
+
+        System.out.print("Please enter the cash amount: ");
+        cashAmount = scanner.nextDouble();
+        balance = cashAmount - sum;
+
+        if(balance > 0.00){
+            System.out.printf("Your change is: %.2f\n",balance);
+            for (Product product : distinct) {
+
+                productQuantity = Collections.frequency(shoppingCart, product);
+
+                // format and display the content of shopping cart
+                System.out.println("\n-------------------------------------------------------------");
+                System.out.println("\t\t\t ITEMS SOLD \t\t\t");
+                System.out.println("\n------- ----------------------------------- ------ ----------");
+                System.out.printf("|%7s|%-35s|%7.2f|%8s|\n", product.getId(), product.getName(),
+                        product.getPrice(), productQuantity);
+                System.out.println("------- ----------------------------------- ------ ----------");
+
+                shoppingCart.clear();
+                homeScreen();
+
+            }
+
+        }
+        else {
+            System.out.printf("Cash amount is insufficient\nTotal amount: %.2f",sum);
         }
 
     }
