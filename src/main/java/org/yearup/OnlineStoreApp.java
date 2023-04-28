@@ -17,6 +17,8 @@ public class OnlineStoreApp {
 
 
     public void run() {
+
+        loadInventory();
         homeScreen();
     }
 
@@ -32,7 +34,7 @@ public class OnlineStoreApp {
 
                 line = scanner.nextLine();
                 String[] productInfo = line.split("\\|");
-                int id = Integer.parseInt(productInfo[0]);
+                String id = productInfo[0];
                 String name = productInfo[1];
                 double price = Double.parseDouble(productInfo[2]);
 
