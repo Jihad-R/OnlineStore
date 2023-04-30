@@ -92,6 +92,7 @@ public class OnlineStoreApp {
                     case 0 -> System.exit(1);
                     case 1 ->
                     {
+                        scanner.nextLine();
                         displayProduct();
                         isValidOption = true;
                     }
@@ -306,7 +307,7 @@ public class OnlineStoreApp {
             System.out.printf("|%7s|%-35s|%7.2f|%8s|\n", product.getId(), product.getName(),
                     product.getPrice(), productQuantity);
             System.out.println("------- ----------------------------------- ------ ----------");
-            
+
             sum += product.getPrice() * productQuantity; // calculate the total amount to be paid
 
         }
