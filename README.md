@@ -1,20 +1,20 @@
 # Table of Contents
 
 1.  [Introduction](#introduction)
-    -   [Project Description](#project-description)
+    -   Project Description
 2.  [Interesting code](#interesting-code)
 3.  [CLI Screens](#cli)
-    -   [Home Screen](#hs)
-    -   [All Proucts Screen](#allPS)
-    -  [Shopping-cart Screen](#sCS)
-    -   [Checkout Screen](#cOS)
-    -   [Error Screens](#eS)
+    -   Home Screen
+    -   All Proucts Screen
+    -  Shopping-cart Screen
+    -   Checkout Screen
+    -   Error Screens
 4.  [How To Use](#howtouse)
-    -   [Home Screen](#homeScreen)
-    -   [All Product Screen](#allProductScreen)
-    -  [Shopping-cart Screen](#shopping-CartScreen)
-    -   [Checkout Screen](#checkoutScreen)
-    - [Exiting](#exiting)
+    -   Home Screen
+    -   All Product Screen
+    -  Shopping-cart Screen
+    -  Checkout Screen
+    - Exiting
  # Introduction <a name="introduction"></a>
  ## Project Description <a name="project-description"></a>
 ### Online Store 🏪
@@ -58,25 +58,29 @@ while (!isValidOption);
 
 ### Home Screen <a name="hs"></a>
 
-![Home Screen](images/HomeScreen.png)
+<img src= "screenshots/homeScreen.png" alt="Home Screen" height="400" width="800"/>
 
 ### List All Products <a name="allPS"></a>
 
-![List All Available Books](images/AvailableBooksScreen.png)
-
+<img src= "screenshots/allProductScreen.png" alt="List All Product" height="500" width="800"/>
 
 ### Shopping Cart Screen <a name="sCS"></a>
 
-![List All Checked Out Books](images/CheckedOutBooks.png)
+<img src= "screenshots/shopping-cartScreen.png" alt="List Shopping-cart Content" height="400" width="800"/>
 
-### Check Out Screen <a name="cOS"></a>
-![Check in Books](images/CheckInBooks.png)
+### Checkout Screen <a name="cOS"></a>
+
+<img src= "screenshots/checkoutScreen.png" alt="Checkout screen" height="400" width="800"/>
 
 ### Error Messages <a name="eS"></a>
 
-![Invalid Input Error Message 1](images/ErrorMessage.png)
+<img src= "screenshots/errorMessage.png" alt="Invalid Input Error Message 1" height="400" width="800"/>
 
-![Invalid Input Error Message 2](images/ErrorMessage1.png)
+<img src= "screenshots/errorMessage2.png" alt="Invalid Input Error Message 2" height="500" width="800"/>
+
+### Warning Message
+<img src= "screenshots/warningMessage.png" alt="Warning message" height="400" width="800"/>
+
 
 # How To Use 📘<a name="howtouse"></a>
 
