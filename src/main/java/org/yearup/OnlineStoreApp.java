@@ -11,10 +11,6 @@ public class OnlineStoreApp {
     private HashMap<String, Product> products = new HashMap<>(); // declare the products hashmap
     private ArrayList<Product> shoppingCart = new ArrayList<>(); // declare the shopping cart
 
-    private final String ANSI_RED = "\u001B[31m";
-    private final String ANSI_RESET = "\u001B[0m";
-    private  final String YELLOW = "\033[0;33m";  // YELLOW
-
     String userInput; // stores the id of the product to be added to the cart
     private boolean isValidOption = false; // checks if the option selected is valid
     private Set<Product> distinct; // delcare a set to store all the distinct products
@@ -48,7 +44,7 @@ public class OnlineStoreApp {
             }
 
         } catch (FileNotFoundException ex) {
-            System.out.println(ANSI_RED + "File not found!" + ANSI_RESET);
+            System.out.println(ConsoleColor.RED + "File not found!" + ConsoleColor.RESET);
         } finally {
             scanner.close();
         }
@@ -68,9 +64,9 @@ public class OnlineStoreApp {
             System.out.println("========================");
             System.out.println("1 - Show Products");
             System.out.println("2 - Show Shopping Carts");
-            System.out.println("0 - Exit");
+            System.out.println("0 -" + ConsoleColor.RED_BOLD + " Exit" + ConsoleColor.RESET);
 
-            System.out.print("Please select a commands: ");
+            System.out.print("Please select a commands (1, 2, or 0): ");
 
             try // try/catch clause in case the user inputs a string
             {
@@ -85,17 +81,19 @@ public class OnlineStoreApp {
                         break;
                     }
                     case 2: {
+                        scanner.nextLine();
                         displayShoppingCart();
                         isValidOption = true;
                         break;
 
                     }
                     default:
-                        System.out.println(ANSI_RED + "The command selected is invalid!" + ANSI_RESET);
+                        System.out.println(ConsoleColor.RED + "The command selected is invalid!" + ConsoleColor.RESET);
                         isValidOption = false;
                 }
             } catch (InputMismatchException ex) {
-                System.out.println(ANSI_RED + "Invalid! Valid inputs are integers between 0 - 2" + ANSI_RESET);
+                System.out.println(ConsoleColor.RED + "Invalid Input! Valid inputs are integers between 0 - 2 " + ConsoleColor.RESET);
+
                 homeScreen();
             }
 
@@ -136,7 +134,7 @@ public class OnlineStoreApp {
                 isValidOption = true;
                 homeScreen();
             } else {
-                System.out.println(ANSI_RED + "Invalid Input" + ANSI_RESET);
+                System.out.println(ConsoleColor.RED + "Invalid Input! Please try again" + ConsoleColor.RESET);
             }
 
             if (userInput.equalsIgnoreCase("X")) {
@@ -148,52 +146,100 @@ public class OnlineStoreApp {
 
     }
 
+
+    // TODO - add user input validation
+// TODO - add try and catch
     private void displayShoppingCart() {
 
         distinct = new HashSet<>(shoppingCart);
+        isValidOption = false;
         int productQuantity;
 
-        System.out.println("\n------- ----------------------------------- ------ ----------");
-        System.out.printf("|%-7s|%-35s|%-7s|%-8s|\n", "ID", "NAME", "PRICE", "QUANTITY");
-        System.out.println("------- ----------------------------------- ------ ----------\n");
+        shoppingCartContent("shopping-cart", 0.00); // display shopping cart content
 
-        for (Product product : distinct) {
+        do {
+            System.out.println("Would you like to" + ConsoleColor.BLUE_BRIGHT + " check out " + ConsoleColor.RESET + "?");
+            System.out.println(ConsoleColor.GREEN + "- 'C' to check out" + ConsoleColor.RESET);
+            System.out.println(ConsoleColor.RED + "- 'X' for home screen" + ConsoleColor.RESET);
+            System.out.print("Select a command: ");
+            userInput = scanner.nextLine();
 
-            // count the frequency of product in shopping cart
-            productQuantity = Collections.frequency(shoppingCart, product);
-            // format and display the content of shopping cart
-            System.out.printf("|%7s|%-35s|%7.2f|%8s|\n", product.getId(), product.getName(),
-                    product.getPrice(), productQuantity);
-            System.out.println("------- ----------------------------------- ------ ----------");
-        }
-
-        System.out.println("Would you like to" + YELLOW + " check out " + ANSI_RESET + "?");
-        System.out.println("- 'C' to check out");
-        System.out.println("- 'X' for home screen");
-        System.out.print("Select a command: ");
-        scanner.nextLine();
-        userInput = scanner.nextLine();
-
-        if (userInput.equalsIgnoreCase("C")) {
-            checkout();
-        } else if (userInput.equalsIgnoreCase("X")) {
-            homeScreen();
-        }
+            if (userInput.equalsIgnoreCase("C") && (shoppingCart.size() > 0)) {
+                checkout();
+                isValidOption = true;
+            } else if (userInput.equalsIgnoreCase("X")) {
+                homeScreen();
+                isValidOption = true;
+            } else if (userInput.equalsIgnoreCase("C") && shoppingCart.size() == 0) {
+                System.out.println(ConsoleColor.YELLOW + "Unable to checkout! " +
+                        "The shopping cart is empty." + ConsoleColor.RESET);
+            } else {
+                System.out.println(ConsoleColor.RED + "Invalid command! Please try again." + ConsoleColor.RESET);
+            }
+        } while (!isValidOption);
 
     }
 
+    // TODO - add user input validation
+// TODO - add try and catch
     private void checkout() {
 
         double sum = 0.00; // declare the variable that would store the total
-        double cashAmount;
-        double balance = 0.00;
+        double cashAmount; // stores the value of the cash amount enter by the user
+        double balance = 0.00; // stores t
+
+        sum = shoppingCartContent("checkout", sum);
+
+        System.out.printf("%7s: %.2f\n", "TOTAL", sum); // display total
+        System.out.println("--------------------------------------------------------------");
+
+        System.out.print("Please enter the cash amount: ");
+
+        try // try-catch clause to catch any invalid input
+        {
+            cashAmount = scanner.nextDouble(); //store the cash amount of the user
+            balance = cashAmount - sum;
+
+            if (balance > 0.00) {
+
+                System.out.printf("Your change is: %.2f\n", balance);
+
+                shoppingCartContent("checkout", sum);
+                shoppingCart.clear();
+
+                homeScreen();
+
+            } else {
+                System.out.printf("Cash amount is insufficient\nTotal amount: %.2f", sum);
+            }
+
+        } catch (InputMismatchException ex) {
+            System.out.println(ConsoleColor.RED + "Invalid input! Please enter a numeric value" + ConsoleColor.RESET);
+            scanner.nextLine();
+            checkout();
+        }
+
+
+    }
+
+
+    public double shoppingCartContent(String contentFor, double sum) {
+
+        String screenTitle = "";
+        switch (contentFor) {
+
+            case "shopping-cart":
+                screenTitle = "\t\t\t\t\tSHOPPING CART";
+                break;
+            case "checkout":
+                screenTitle = "\t\t\t\t\tONLINE STORE CHECK OUT";
+                break;
+        }
 
         System.out.println("===============================================================");
-        System.out.println("\t\t\tONLINE STORE CHECK OUT\t\t\t");
+        System.out.println(screenTitle);
         System.out.println("===============================================================");
-
-
-        System.out.println("\n------- ----------------------------------- ------ ----------");
+        System.out.println("------- ----------------------------------- ------ ----------");
         System.out.printf("|%-7s|%-35s|%-7s|%-8s|\n", "ID", "NAME", "PRICE", "QUANTITY");
         System.out.println("------- ----------------------------------- ------ ----------");
 
@@ -206,41 +252,17 @@ public class OnlineStoreApp {
                     product.getPrice(), productQuantity);
             System.out.println("------- ----------------------------------- ------ ----------");
 
-            sum += product.getPrice() * productQuantity;
-
-        }
-        System.out.printf("%7s: %.2f\n","TOTAL",sum); // dispaly total
-        System.out.println("--------------------------------------------------------------");
-
-        System.out.print("Please enter the cash amount: ");
-        cashAmount = scanner.nextDouble();
-        balance = cashAmount - sum;
-
-        if(balance > 0.00){
-            System.out.printf("Your change is: %.2f\n",balance);
-            for (Product product : distinct) {
-
-                productQuantity = Collections.frequency(shoppingCart, product);
-
-                // format and display the content of shopping cart
-                System.out.println("\n-------------------------------------------------------------");
-                System.out.println("\t\t\t ITEMS SOLD \t\t\t");
-                System.out.println("\n------- ----------------------------------- ------ ----------");
-                System.out.printf("|%7s|%-35s|%7.2f|%8s|\n", product.getId(), product.getName(),
-                        product.getPrice(), productQuantity);
-                System.out.println("------- ----------------------------------- ------ ----------");
-
-                shoppingCart.clear();
-                homeScreen();
+            if (contentFor.equalsIgnoreCase("checkout")) {
+                sum += product.getPrice() * productQuantity;
 
             }
 
         }
-        else {
-            System.out.printf("Cash amount is insufficient\nTotal amount: %.2f",sum);
-        }
+
+        return sum;
+
 
     }
-
-
 }
+
+
