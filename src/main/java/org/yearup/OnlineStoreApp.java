@@ -19,8 +19,8 @@ public class OnlineStoreApp {
 
     public void run() //
     {
-        loadInventory();
-        homeScreen();
+        loadInventory(); // load inventory
+        homeScreen(); // display home screen
     }
 
 
@@ -65,6 +65,7 @@ public class OnlineStoreApp {
 
     }
 
+    //Displays home screen UI
     public void homeScreen() //
     {
         scanner = new Scanner(System.in); // scan input stream from the user's keyboard
@@ -122,7 +123,8 @@ public class OnlineStoreApp {
 
     }
 
-    private void displayProduct() // display product screen UI
+    // Displays product screen UI
+    private void displayProduct()
     {
         isValidOption = false;
 
@@ -175,7 +177,8 @@ public class OnlineStoreApp {
     }
 
 
-    private void displayShoppingCart() //
+    // Displays shopping cart UI
+    private void displayShoppingCart()
     {
         distinct = new HashSet<>(shoppingCart); // store the unique instances of the arraylist
         isValidOption = false;
@@ -186,9 +189,10 @@ public class OnlineStoreApp {
         System.out.printf("%7s: %.2f\n", "TOTAL", sum); // display total
         System.out.println("--------------------------------------------------------------");
 
-        do
+        do // do-while loop that loops until a valid option is selected
         {
-            System.out.println("Would you like to" + ConsoleColor.BLUE_BRIGHT + " check out " + ConsoleColor.RESET + "?");
+            System.out.println("Would you like to" + ConsoleColor.BLUE_BRIGHT + " check out "
+                    + ConsoleColor.RESET + "?");
             System.out.println(ConsoleColor.GREEN + "- 'C' to check out" + ConsoleColor.RESET);
             System.out.println(ConsoleColor.RED_BOLD + "- 'X' for home screen" + ConsoleColor.RESET);
 
@@ -197,14 +201,14 @@ public class OnlineStoreApp {
 
             if (userInput.equalsIgnoreCase("C") && (shoppingCart.size() > 0))
             {
-                checkout();
                 isValidOption = true;
+                checkout(); // navigate to the checkout screen
             }
 
             else if (userInput.equalsIgnoreCase("X"))
             {
-                homeScreen();
                 isValidOption = true;
+                homeScreen(); // navigate to the home screen
             }
 
             else if (userInput.equalsIgnoreCase("C") && shoppingCart.size() == 0)
@@ -222,7 +226,8 @@ public class OnlineStoreApp {
         while (!isValidOption);
     }
 
-    private void checkout() //
+    // Displays checkout screen
+    private void checkout()
     {
         double cashAmount; // stores the value of the cash amount enter by the user
         double balance; // stores the value of the change
@@ -238,19 +243,21 @@ public class OnlineStoreApp {
         try // try-catch clause to catch any invalid input
         {
             cashAmount = scanner.nextDouble(); //store the cash amount of the user
-            balance = cashAmount - sum;
+            balance = cashAmount - sum; // calculate change
 
             if (balance > 0.00)
             {
                 shoppingCartContent("soldItems", sum);
-                System.out.printf("%sYour change is: $%.2f%s\n", ConsoleColor.BLUE, balance, ConsoleColor.RESET);
+                System.out.printf("%sYour change is: $%.2f%s\n",
+                        ConsoleColor.BLUE, balance, ConsoleColor.RESET); //display change
                 shoppingCart.clear();
 
                 homeScreen();
             }
             else
             {
-                System.out.printf("%sCash amount is insufficient.\n%sTotal amount: %.2f\n", ConsoleColor.YELLOW, ConsoleColor.RESET, sum);
+                System.out.printf("%sCash amount is insufficient.\n%sTotal amount: %.2f\n",
+                        ConsoleColor.YELLOW, ConsoleColor.RESET, sum); // warning message
                 homeScreen();
             }
 
@@ -274,7 +281,7 @@ public class OnlineStoreApp {
 
     public double shoppingCartContent(String contentFor, double sum) //
     {
-        String screenTitle = switch (contentFor) //
+        String screenTitle = switch (contentFor) // switch cases to decide the screen title
                 {
                     case "shopping-cart" -> "\t\t\t\t\tSHOPPING CART";
                     case "checkout" -> "\t\t\t\t\tONLINE STORE CHECK OUT";
@@ -299,8 +306,8 @@ public class OnlineStoreApp {
             System.out.printf("|%7s|%-35s|%7.2f|%8s|\n", product.getId(), product.getName(),
                     product.getPrice(), productQuantity);
             System.out.println("------- ----------------------------------- ------ ----------");
-
-            sum += product.getPrice() * productQuantity;
+            
+            sum += product.getPrice() * productQuantity; // calculate the total amount to be paid
 
         }
         return sum;
