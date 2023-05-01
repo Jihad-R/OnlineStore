@@ -161,7 +161,7 @@ public class OnlineStoreApp {
                 homeScreen(); // navigate to the home screen
             }
 
-            else
+            else if(!(userInput.equalsIgnoreCase("x")))
             {
                 System.out.println(ConsoleColor.RED + "Invalid Input! Please try again."
                         + ConsoleColor.RESET); // error message
