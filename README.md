@@ -27,7 +27,7 @@ Users have the ability to:
 4. Check out the shopping cart 🏧
 # Interesting Code <img src="https://github.com/devicons/devicon/blob/master/icons/java/java-original-wordmark.svg" title="Java" alt="Java" width="40" height="40"/><a name="interesting-code"></a>&nbsp;
 
-The code demonstrates how to use a do-while loop to receive user input and validate it using a switch statement in Java. What makes this code interesting is the use of a try and catch clause to catch exceptions when the user enters input that is not an integer. In such cases, the code displays an error message and recursively calls the home screen function. This approach ensures that the program does not crash due to invalid input from the user. You can use this code as a reference when developing a Java program that requires user input validation.
+The code demonstrates how to use a `do-while` loop to receive user input and validate it using a switch statement in Java. What makes this code interesting is the use of a try and catch clause to catch exceptions when the user enters input that is not an integer. In such cases, the code displays an error message and recursively calls the home screen function. This approach ensures that the program does not crash due to invalid input from the user. You can use this code as a reference when developing a Java program that requires user input validation.
 ```java
  do
  {
